@@ -1,6 +1,4 @@
 import React from 'react';
-
-// This component has been removed as requested
 const BookingPage = () => {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center">

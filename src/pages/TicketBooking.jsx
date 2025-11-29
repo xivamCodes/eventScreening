@@ -3,12 +3,17 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Calendar, Clock, MapPin, Users, Star, ChevronRight, AlertCircle, CheckCircle, Loader2, ChevronDown, Check } from 'lucide-react';
 import { useEventContext } from '../context/EventContext';
+import emailjs from '@emailjs/browser';
 
 // Modern state management with useReducer
 const initialBookingState = {
   ticketCount: 1,
   seatPreference: 'C', // Default to regular fare (C Row)
   seatPremiumSurcharge: 0,
+  customerInfo: {
+    name: '',
+    email: ''
+  },
   coupon: {
     code: '',
     discount: 0,
@@ -101,14 +106,14 @@ const bookingReducer = (state, action) => {
       return {
         ...state,
         validation: {
-          errors: { ...state.validation.errors, [action.field]: action.message },
-          isValid: false
+          errors: { ...state.validation.errors, ...action.payload },
+          isValid: Object.keys({ ...state.validation.errors, ...action.payload }).length === 0
         }
       };
     
     case 'CLEAR_VALIDATION_ERROR':
       const newErrors = { ...state.validation.errors };
-      delete newErrors[action.field];
+      delete newErrors[action.payload];
       return {
         ...state,
         validation: {
@@ -127,6 +132,23 @@ const bookingReducer = (state, action) => {
       return {
         ...state,
         ui: { ...state.ui, showConfirmation: action.payload }
+      };
+    
+    case 'SET_CUSTOMER_INFO':
+      return {
+        ...state,
+        customerInfo: {
+          ...state.customerInfo,
+          [action.payload.field]: action.payload.value
+        },
+        validation: {
+          ...state.validation,
+          errors: {
+            ...state.validation.errors,
+            [action.payload.field]: ''
+          },
+          isValid: true
+        }
       };
     
     default:
@@ -199,7 +221,7 @@ const TicketBooking = () => {
       }
       
       if (!foundEvent) {
-        dispatch({ type: 'SET_VALIDATION_ERROR', field: 'event', message: 'Event not found' });
+        dispatch({ type: 'SET_VALIDATION_ERROR', payload: { event: 'Event not found' } });
         return;
       }
       
@@ -208,10 +230,10 @@ const TicketBooking = () => {
       setSelectedTime(foundEvent.time);
       
       
-      dispatch({ type: 'CLEAR_VALIDATION_ERROR', field: 'event' });
+      dispatch({ type: 'CLEAR_VALIDATION_ERROR', payload: 'event' });
     } catch (error) {
       console.error('Error loading event:', error);
-      dispatch({ type: 'SET_VALIDATION_ERROR', field: 'event', message: 'Failed to load event details' });
+      dispatch({ type: 'SET_VALIDATION_ERROR', payload: { event: 'Failed to load event details' } });
     } finally {
       setLoading(false);
     }
@@ -275,16 +297,56 @@ const TicketBooking = () => {
     }
   }, [bookingState.coupon.code, validateCoupon]);
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
 
-  const handleTicketCountChange = useCallback((increment) => {
-    const newCount = bookingState.ticketCount + increment;
-    dispatch({ type: 'SET_TICKET_COUNT', payload: newCount });
-  }, [bookingState.ticketCount]);
+  const handleCustomerInfoChange = (field, value) => {
+    dispatch({ 
+      type: 'SET_CUSTOMER_INFO',
+      payload: { field, value }
+    });
+  };
+
+  const handleProceedToPayment = useCallback(() => {
+    // Validate form
+    const errors = {};
+    
+    if (!selectedTime) {
+      errors.time = 'Please select a time';
+    }
+    
+    if (!bookingState.customerInfo.name.trim()) {
+      errors.name = 'Name is required';
+    }
+    
+    if (!bookingState.customerInfo.email) {
+      errors.email = 'Email is required';
+    } else if (!validateEmail(bookingState.customerInfo.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    
+    if (Object.keys(errors).length > 0) {
+      dispatch({ type: 'SET_VALIDATION_ERROR', payload: errors });
+      return;
+    }
+    
+    // If no errors, proceed to payment
+    dispatch({ type: 'SET_PROCESSING', payload: true });
+    
+    // Simulate API call
+    setTimeout(() => {
+      dispatch({ type: 'SHOW_CONFIRMATION' });
+      dispatch({ type: 'SET_PROCESSING', payload: false });
+    }, 1500);
+  }, [selectedTime, bookingState.customerInfo]);
 
   const handleProceed = useCallback(async () => {
     if (!event) return;
     
     // Clear previous validation errors
+    dispatch({ type: 'CLEAR_VALIDATION_ERROR', payload: 'general' });
     dispatch({ type: 'CLEAR_VALIDATION_ERROR', field: 'general' });
     
     // Validation
@@ -746,6 +808,67 @@ const TicketBooking = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
+              </div>
+
+              {/* Customer Information Section */}
+              <div className="mb-4 sm:mb-6">
+                <h3 className="text-gray-300 font-medium mb-3 sm:mb-4 text-sm sm:text-base">Your Information</h3>
+                
+                {/* Name Input */}
+                <div className="mb-4">
+                  <label htmlFor="customer-name" className="block text-gray-300 mb-2 text-sm sm:text-base">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="customer-name"
+                      type="text"
+                      value={bookingState.customerInfo.name}
+                      onChange={(e) => handleCustomerInfoChange('name', e.target.value)}
+                      onFocus={() => dispatch({ type: 'CLEAR_VALIDATION_ERROR', payload: 'name' })}
+                      className={`w-full bg-gray-800/50 border ${
+                        bookingState.validation.errors.name ? 'border-red-500' : 'border-gray-600 focus:border-yellow-400'
+                      } text-white px-3 sm:px-4 py-3 rounded-lg focus:outline-none focus:bg-gray-800 transition-all duration-300 placeholder-gray-400 min-h-[44px] text-sm sm:text-base`}
+                      placeholder="Enter your full name"
+                      aria-invalid={!!bookingState.validation.errors.name}
+                      aria-describedby="name-error"
+                    />
+                  </div>
+                  {bookingState.validation.errors.name && (
+                    <p id="name-error" className="mt-1 text-sm text-red-400">
+                      {bookingState.validation.errors.name}
+                    </p>
+                  )}
+                </div>
+                
+                {/* Email Input */}
+                <div className="mb-4">
+                  <label htmlFor="customer-email" className="block text-gray-300 mb-2 text-sm sm:text-base">
+                    Email Address <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="customer-email"
+                      type="email"
+                      value={bookingState.customerInfo.email}
+                      onChange={(e) => handleCustomerInfoChange('email', e.target.value)}
+                      onFocus={() => dispatch({ type: 'CLEAR_VALIDATION_ERROR', payload: 'email' })}
+                      className={`w-full bg-gray-800/50 border ${
+                        bookingState.validation.errors.email ? 'border-red-500' : 'border-gray-600 focus:border-yellow-400'
+                      } text-white px-3 sm:px-4 py-3 rounded-lg focus:outline-none focus:bg-gray-800 transition-all duration-300 placeholder-gray-400 min-h-[44px] text-sm sm:text-base`}
+                      placeholder="your.email@example.com"
+                      aria-invalid={!!bookingState.validation.errors.email}
+                      aria-describedby="email-error"
+                    />
+                  </div>
+                  {bookingState.validation.errors.email ? (
+                    <p id="email-error" className="mt-1 text-sm text-red-400">
+                      {bookingState.validation.errors.email}
+                    </p>
+                  ) : (
+                    <p className="mt-1 text-xs text-gray-400">We'll send your tickets to this email</p>
+                  )}
+                </div>
               </div>
 
               {/* Coupon Code Section */}
