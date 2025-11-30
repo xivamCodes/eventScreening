@@ -287,6 +287,14 @@ const TicketBooking = () => {
     }
   }, [bookingState.ticketCount, validateCoupon, bookingState.coupon.code, bookingState.coupon.isValid, event]);
 
+  // Handle ticket count changes
+  const handleTicketCountChange = useCallback((increment) => {
+    const newCount = bookingState.ticketCount + increment;
+    if (newCount >= 1 && newCount <= 2) {
+      dispatch({ type: 'SET_TICKET_COUNT', payload: newCount });
+    }
+  }, [bookingState.ticketCount]);
+
   // Memoized handlers
   const handleCouponSubmit = useCallback(() => {
     const code = bookingState.coupon.code.trim();
@@ -657,22 +665,35 @@ const TicketBooking = () => {
                     {bookingState.ticketCount}
                   </motion.span>
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: bookingState.ticketCount >= 2 ? 1 : 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => handleTicketCountChange(1)}
+                    onClick={() => bookingState.ticketCount < 2 && handleTicketCountChange(1)}
                     disabled={bookingState.ticketCount >= 2}
-                    aria-label="Increase ticket count"
+                    aria-label={bookingState.ticketCount >= 2 ? "Maximum ticket limit reached" : "Increase ticket count"}
                     aria-describedby="ticket-count-display"
                     className={`w-10 h-10 rounded-full border flex items-center justify-center min-h-[44px] transition-all ${
                       bookingState.ticketCount >= 2 
-                        ? 'border-gray-800 text-gray-600 cursor-not-allowed' 
+                        ? 'border-red-500/30 text-red-500/50 cursor-not-allowed' 
                         : 'border-gray-700 text-gray-300 hover:border-yellow-400 hover:text-yellow-400'
                     }`}
                   >
                     +
                   </motion.button>
                 </div>
-                <p className="mt-2 text-xs sm:text-sm text-gray-400">Max 2 tickets per order.</p>
+                <AnimatePresence mode="wait">
+                  <motion.p 
+                    key={bookingState.ticketCount}
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`mt-2 text-xs sm:text-sm ${
+                      bookingState.ticketCount >= 2 ? 'text-red-400' : 'text-gray-400'
+                    }`}
+                  >
+                    {bookingState.ticketCount >= 2 
+                      ? 'Maximum of 2 tickets per order reached' 
+                      : 'Max 2 tickets per order.'}
+                  </motion.p>
+                </AnimatePresence>
               </div>
 
               {/* Seat Preference Section */}
