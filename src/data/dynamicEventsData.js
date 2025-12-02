@@ -2,7 +2,7 @@
 export const movieEventMappings = [
   {
     id: 1,
-    title: "Drive-in Cinema: Fifty Shades of Grey",
+    title: "Drive-in Cinema: Our Fault",
     type: "Drive-in",
     time: "9:00 pm",
     location: "JLN gate 14, Delhi",
@@ -11,7 +11,7 @@ export const movieEventMappings = [
     price: "899",
     capacity: "120 cars",
     city: "Delhi NCR",
-    movieName: "Fifty Shades of Grey"
+    movieName: "Our Fault"
   },
   {
     id: 2,

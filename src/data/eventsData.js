@@ -41,7 +41,7 @@ const createEvent = (eventData) => {
 export const eventsData = [
   createEvent({
     id: 1,
-    title: "Fifty Shades of Grey",
+    title: "Our Fault",
     type: "Open-Screening",
     date: "October 18, 2025",
     time: "7:00 PM",
@@ -51,7 +51,7 @@ export const eventsData = [
     price: "899",
     capacity: "150 seats",
     city: "Delhi NCR",
-    movieName: "Fifty Shades of Grey"
+    movieName: "Our Fault"
   },
   {
     id: 2,
