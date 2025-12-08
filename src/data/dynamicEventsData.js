@@ -15,7 +15,7 @@ export const movieEventMappings = [
   },
   {
     id: 2,
-    title: "Open Air Screening: My Fault",
+    title: "Open Air Screening: Ghosted",
     type: "Open Air",
     time: "8:00 PM",
     location: "JLN gate 14, Delhi",
