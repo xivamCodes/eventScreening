@@ -2,16 +2,16 @@
 export const movieEventMappings = [
   {
     id: 1,
-    title: "Drive-in Cinema: Our Fault",
+    title: "Drive-in Cinema: My Fault",
     type: "Drive-in",
     time: "9:00 pm",
     location: "JLN gate 14, Delhi",
     description: "Ana, a college student, interviews an enigmatic billionaire entrepreneur, Christian, for her campus' periodical. A steamy sadomasochistic affair starts between the two, whose roots lie in his past.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/g6AXE4lF9p__MG_6087 (1).jpg",
     price: "899",
-    capacity: "120 cars",
+    capacity: "20 cars",
     city: "Delhi NCR",
-    movieName: "Our Fault"
+    movieName: "My Fault"
   },
   {
     id: 2,

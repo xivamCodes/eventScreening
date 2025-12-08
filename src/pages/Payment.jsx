@@ -480,11 +480,20 @@ const PaymentMethods = ({ finalPrice, onCancel, onPaymentError, onEmailSubmit, o
     // Show loading state
     setPaymentStatus('processing');
     
-    // Simulate payment processing
-    setTimeout(() => {
-      // In a real app, you would make an API call to your payment processor here
-      // and handle the response accordingly
-      const paymentSuccess = Math.random() > 0.1; // 90% success rate for demo
+    // In a real app, you would:
+    // 1. Call your backend to verify the payment
+    // 2. Update the payment status based on the response
+    // 3. Handle success/failure accordingly
+    
+    // For demo purposes, we'll simulate a successful payment after a delay
+    // In production, you would wait for the payment confirmation from your backend
+    const paymentCheckInterval = setInterval(() => {
+      // In a real app, you would check with your backend for payment status
+      // For demo, we'll just wait a moment and then show success
+      clearInterval(paymentCheckInterval);
+      
+      // Simulate payment success (in a real app, this would be based on actual payment status)
+      const paymentSuccess = true; // For demo, always assume success
       
       if (paymentSuccess) {
         setPaymentStatus('success');
@@ -496,9 +505,9 @@ const PaymentMethods = ({ finalPrice, onCancel, onPaymentError, onEmailSubmit, o
         }, 1000);
       } else {
         setPaymentStatus('failed');
-        if (onPaymentError) onPaymentError('Payment failed. Please try again.');
+        if (onPaymentError) onPaymentError('Payment verification failed. Please check your payment and try again.');
       }
-    }, 2000); // 2 second delay to simulate network request
+    }, 3000); // Check payment status after 3 seconds
   };
 
   const amount = Number(finalPrice || 0).toFixed(2);
@@ -626,9 +635,23 @@ const PaymentMethods = ({ finalPrice, onCancel, onPaymentError, onEmailSubmit, o
                     e.preventDefault();
                     // Show payment confirmation dialog
                     setShowPaymentConfirmation(true);
+                    
+                    // After a short delay, open the UPI payment link
+                    // This gives time for the confirmation dialog to show
+                    setTimeout(() => {
+                      try {
+                        // Open UPI payment link in a new tab
+                        window.open(upiLink, '_blank', 'noopener,noreferrer');
+                        // Also trigger the payment processing
+                        handlePayment();
+                      } catch (error) {
+                        console.error('Error opening payment link:', error);
+                        if (onPaymentError) onPaymentError('Failed to open payment app. Please try again.');
+                      }
+                    }, 500);
                   }}
                 >
-                  Scan to pay
+                  Pay with UPI
                 </a>
               )}
               {timeLeft > 0 && (
