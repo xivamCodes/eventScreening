@@ -82,7 +82,7 @@ export const movieEventMappings = [
     id: 7,
     title: "Drive-in Cinema: Top Gun Maverick",
     type: "Drive-in",
-    time: "7:30 PM",
+    time: "2:30 PM",
     location: "Gurgaon Drive-in Theatre",
     description: "Feel the need for speed with Top Gun: Maverick. Experience high-octane action in our premium drive-in setup with surround sound.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/g6AXE4lF9p__MG_6087 (1).jpg",
