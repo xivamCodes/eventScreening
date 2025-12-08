@@ -49,7 +49,7 @@ export const eventsData = [
     description: "Experience Christopher Nolan's masterpiece under the stars. Bring your car and enjoy this epic superhero film in our premium drive-in setup.",
     image: "https://sunsetcinemaclub.in/img/admin/page/home/yvPVsqAWdR_rsz_cafe_cinema_2.jpg",
     price: "899",
-    capacity: "150 seats",
+    capacity: "16 seats",
     city: "Delhi NCR",
     movieName: "Our Fault"
   },
