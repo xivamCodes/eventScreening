@@ -21,7 +21,7 @@ export const movieEventMappings = [
     location: "JLN gate 14, Delhi",
     description: "Join us for an emotional rollercoaster with Your Fault. Bring your blankets and experience this powerful story unfold under the open sky.",
     image: "https://sunsetcinemaclub.in/img/admin/page/home/AK9pBWeu1Y__DSC6756 (1).jpg",
-    price: "599",
+    price: "899",
     capacity: "200 people",
     city: "Delhi NCR",
     movieName: "Inception"
