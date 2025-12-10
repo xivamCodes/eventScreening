@@ -131,7 +131,7 @@ export const eventsData = [
     description: "Feel the need for speed with Top Gun: Maverick. Experience high-octane action in our premium drive-in setup with surround sound.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/g6AXE4lF9p__MG_6087 (1).jpg",
     price: "899",
-    capacity: "150 cars",
+    capacity: "4 cars",
     city: "Delhi NCR"
   },
   {
