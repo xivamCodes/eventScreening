@@ -127,7 +127,7 @@ export const eventsData = [
     type: "Drive-in",
     date: "April 5, 2024",
     time: "6:30 PM",
-    location: "JLN gate no. 14, Delhi",
+    location: "Chittaranjan Park, Delhi",
     description: "Feel the need for speed with Top Gun: Maverick. Experience high-octane action in our premium drive-in setup with surround sound.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/g6AXE4lF9p__MG_6087 (1).jpg",
     price: "899",
