@@ -9,7 +9,7 @@ export const movieEventMappings = [
     description: "Ana, a college student, interviews an enigmatic billionaire entrepreneur, Christian, for her campus' periodical. A steamy sadomasochistic affair starts between the two, whose roots lie in his past.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/g6AXE4lF9p__MG_6087 (1).jpg",
     price: "899",
-    capacity: "4",
+    capacity: "20",
     city: "Delhi NCR",
     movieName: "Our Fault"
   },
