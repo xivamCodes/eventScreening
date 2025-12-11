@@ -83,11 +83,11 @@ export const movieEventMappings = [
     title: "Drive-in Cinema: Top Gun Maverick",
     type: "Drive-in",
     time: "2:30 PM",
-    location: "Gurgaon Drive-in Theatre",
+    location: "Chittaranjan Park",
     description: "Feel the need for speed with Top Gun: Maverick. Experience high-octane action in our premium drive-in setup with surround sound.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/g6AXE4lF9p__MG_6087 (1).jpg",
     price: "899",
-    capacity: "150 cars",
+    capacity: "18 cars",
     city: "Delhi NCR",
     movieName: "Top Gun: Maverick"
   },
