@@ -47,7 +47,7 @@ export const movieEventMappings = [
     location: "DLF Avenue Saket, Delhi",
     description: "Celebrate Bollywood with a special screening of classic Hindi films. Enjoy traditional snacks and immerse yourself in the magic of Indian cinema.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/wuR5UuK2NU_IMG20250608142231 (1).jpg",
-    price: "799",
+    price: "899",
     capacity: "300 people",
     city: "Delhi NCR",
     movieName: "3 Idiots"
@@ -60,7 +60,7 @@ export const movieEventMappings = [
     location: "Faridabad Drive-in Theatre",
     description: "Experience the epic sci-fi adventure of Dune in our state-of-the-art drive-in setup. Perfect sound and visual experience guaranteed.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/GBZpBbHppA_IMG20250608123536 (2).jpg",
-    price: "999",
+    price: "899",
     capacity: "120 cars",
     city: "Delhi NCR",
     movieName: "Dune"
@@ -73,7 +73,7 @@ export const movieEventMappings = [
     location: "Nehru Park, Delhi",
     description: "Witness James Cameron's visual masterpiece Avatar in our open-air setup. Experience Pandora like never before under the stars.",
     image: "https://media.assettype.com/deccanherald%2Fimport%2Fsites%2Fdh%2Ffiles%2Farticle_images%2FSCC.jpg?w=undefined",
-    price: "699",
+    price: "899",
     capacity: "250 people",
     city: "Delhi NCR",
     movieName: "Avatar"
@@ -99,7 +99,7 @@ export const movieEventMappings = [
     location: "Connaught Place, Delhi",
     description: "Join us for an epic Marvel marathon featuring the best of MCU. Food and beverages available throughout the event.",
     image: "https://images.thedirect.com/media/article_full/marvel-posters-ranked.jpg",
-    price: "1299",
+    price: "899",
     capacity: "200 people",
     city: "Delhi NCR",
     movieName: "Avengers: Endgame"
@@ -112,7 +112,7 @@ export const movieEventMappings = [
     location: "Lodhi Garden, Delhi",
     description: "Enter the Matrix with this iconic sci-fi thriller. Experience the groundbreaking visual effects under the open sky.",
     image: "https://sunsetcinemaclub.in/img/admin/page/home/AK9pBWeu1Y__DSC6756 (1).jpg",
-    price: "649",
+    price: "899",
     capacity: "200 people",
     city: "Delhi NCR",
     movieName: "The Matrix"
@@ -125,7 +125,7 @@ export const movieEventMappings = [
     location: "Faridabad Drive-in Theatre",
     description: "Welcome to Jurassic Park! Experience the thrill of dinosaurs in our premium drive-in setup with crystal clear sound.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/GBZpBbHppA_IMG20250608123536 (2).jpg",
-    price: "849",
+    price: "899",
     capacity: "120 cars",
     city: "Delhi NCR",
     movieName: "Jurassic Park"
