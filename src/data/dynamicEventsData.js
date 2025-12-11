@@ -2,7 +2,7 @@
 export const movieEventMappings = [
   {
     id: 1,
-    title: "Drive-in Cinema: My Fault",
+    title: "Drive-in Cinema: Our Fault",
     type: "Drive-in",
     time: "8:00 pm",
     location: "JLN gate 14, Delhi",
@@ -11,7 +11,7 @@ export const movieEventMappings = [
     price: "899",
     capacity: "4",
     city: "Delhi NCR",
-    movieName: "My Fault"
+    movieName: "Our Fault"
   },
   {
     id: 2,
@@ -132,18 +132,65 @@ export const movieEventMappings = [
   }
 ];
 
+// Function to shuffle array using Fisher-Yates algorithm
+const shuffleArray = (array) => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
+
+// Get a consistent seed based on the current date
+const getDailySeed = () => {
+  const now = new Date();
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+  const istTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60 * 1000) + istOffset);
+  
+  // If it's after 8 PM IST, use tomorrow's date for the seed
+  if (istTime.getHours() >= 20) {
+    istTime.setDate(istTime.getDate() + 1);
+  }
+  
+  // Return a string in YYYY-MM-DD format for consistent seeding
+  return istTime.toISOString().split('T')[0];
+};
+
 // Utility functions for dynamic date generation
 export const generateDynamicEvents = () => {
-  const today = new Date();
+  const seed = getDailySeed();
   const dynamicEvents = [];
   
-    // Check if current time is after 8 PM
-  const currentHour = today.getHours();
-  const useTomorrow = currentHour >= 20; // 8 PM or later
+  // Create a seedable random number generator
+  const seededRandom = (seed) => {
+    let value = 0;
+    for (let i = 0; i < seed.length; i++) {
+      value = (value << 5) - value + seed.charCodeAt(i);
+      value = value & value; // Convert to 32bit integer
+    }
+    return () => {
+      value = (value * 16807) % 2147483647;
+      return (value - 1) / 2147483646;
+    };
+  };
+  
+  const random = seededRandom(seed);
+  
+  // Shuffle the events using the seeded random
+  const shuffledEvents = [...movieEventMappings].sort(() => 0.5 - random());
+  
+  // Get the current date in IST
+  const now = new Date();
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
+  const istTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60 * 1000) + istOffset);
+  
+  // If it's after 8 PM IST, use tomorrow's date
+  const useTomorrow = istTime.getHours() >= 20;
   
   // Generate events with dynamic date
-  for (let i = 0; i < movieEventMappings.length; i++) {
-    const eventDate = new Date(today);
+  for (let i = 0; i < shuffledEvents.length; i++) {
+    const eventDate = new Date(istTime);
     
     // If it's after 8 PM, show tomorrow's date
     if (useTomorrow) {
@@ -152,25 +199,26 @@ export const generateDynamicEvents = () => {
     
     // Format the date
     const formattedDate = eventDate.toLocaleDateString('en-US', {
+      weekday: 'long',
       month: 'long',
       day: 'numeric',
       year: 'numeric'
     });
     
-    // Use the current movie mapping
-    const baseEvent = movieEventMappings[i];
-    
-    // Update title to include the movie name
-    const updatedTitle = `${baseEvent.title}`;
+    const baseEvent = shuffledEvents[i];
     
     const dynamicEvent = {
       ...baseEvent,
-      id: baseEvent.id + (i * 100), // Ensure unique IDs
-      title: updatedTitle,
+      id: `${baseEvent.id}-${seed}-${i}`, // Make ID unique per day
+      title: baseEvent.title,
       date: formattedDate,
       movieName: baseEvent.movieName,
       isActive: true,
-      dayOffset: i
+      dayOffset: i,
+      // Add a random price variation for demonstration
+      price: Math.floor(baseEvent.price * (0.9 + (random() * 0.2))).toString(),
+      // Add a unique seed for any additional randomization needed
+      seed: seed
     };
     
     dynamicEvents.push(dynamicEvent);
@@ -186,12 +234,30 @@ export const shouldRefreshEvents = (lastRefresh) => {
   const now = new Date();
   const lastRefreshDate = new Date(lastRefresh);
   
-  // Refresh if it's a new day or if more than 1 hour has passed
+  // Get current time in IST (UTC+5:30)
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
+  const nowIST = new Date(now.getTime() + (now.getTimezoneOffset() * 60 * 1000) + istOffset);
+  const lastRefreshIST = new Date(lastRefreshDate.getTime() + (lastRefreshDate.getTimezoneOffset() * 60 * 1000) + istOffset);
+  
+  // Check if we've crossed 8 PM since last refresh
+  const isAfter8PM = nowIST.getHours() >= 20;
+  const wasRefreshedAfter8PM = lastRefreshIST.getHours() >= 20;
+  
+  // Check if it's a new day in IST
+  const isNewDay = (
+    nowIST.getDate() !== lastRefreshIST.getDate() ||
+    nowIST.getMonth() !== lastRefreshIST.getMonth() ||
+    nowIST.getFullYear() !== lastRefreshIST.getFullYear()
+  );
+  
+  // Refresh if:
+  // 1. It's a new day and after 8 PM, or
+  // 2. We haven't refreshed after 8 PM today, or
+  // 3. It's been more than 30 minutes since last refresh
   return (
-    now.getDate() !== lastRefreshDate.getDate() ||
-    now.getMonth() !== lastRefreshDate.getMonth() ||
-    now.getFullYear() !== lastRefreshDate.getFullYear() ||
-    (now.getTime() - lastRefreshDate.getTime()) > 3600000 // 1 hour in milliseconds
+    (isNewDay && isAfter8PM) ||
+    (isAfter8PM && !wasRefreshedAfter8PM) ||
+    (now.getTime() - lastRefreshDate.getTime() > 30 * 60 * 1000) // 30 minutes
   );
 };
 
