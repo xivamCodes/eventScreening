@@ -22,7 +22,7 @@ export const movieEventMappings = [
     description: "Join us for an emotional rollercoaster with Your Fault. Bring your blankets and experience this powerful story unfold under the open sky.",
     image: "https://sunsetcinemaclub.in/img/admin/page/home/AK9pBWeu1Y__DSC6756 (1).jpg",
     price: "899",
-    capacity: "9 people",
+    capacity: "90 people",
     city: "Delhi NCR",
     movieName: "Inception"
   },
