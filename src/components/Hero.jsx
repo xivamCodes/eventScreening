@@ -30,13 +30,22 @@ const Hero = () => {
   }, []);
 
   const scrollToContent = () => {
-    const heroSection = document.querySelector('section.relative');
-    if (heroSection) {
-      const heroBottom = heroSection.getBoundingClientRect().bottom + window.scrollY;
-      window.scrollTo({
-        top: heroBottom - 60, // 60px above the bottom of hero
-        behavior: 'smooth'
+    const eventsSection = document.getElementById('events-section');
+    if (eventsSection) {
+      eventsSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
       });
+    } else {
+      // Fallback to hero bottom if events section is not found
+      const heroSection = document.querySelector('section.relative');
+      if (heroSection) {
+        const heroBottom = heroSection.getBoundingClientRect().bottom + window.scrollY;
+        window.scrollTo({
+          top: heroBottom - 60,
+          behavior: 'smooth'
+        });
+      }
     }
   };
   return (
@@ -123,7 +132,7 @@ const Hero = () => {
                 <button onClick={openModal} className="w-full sm:w-auto bg-yellow-400 text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg min-h-[44px]">
                   Join The Club
                 </button>
-                <button onClick={() => navigate('/events')} className="w-full sm:w-auto border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-white hover:text-black transition-all duration-300 min-h-[44px]">
+                <button onClick={scrollToContent} className="w-full sm:w-auto border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-white hover:text-black transition-all duration-300 min-h-[44px] transition-transform hover:scale-105">
                   View Events
                 </button>
               </motion.div>
