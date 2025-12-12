@@ -124,7 +124,7 @@ export const movieEventMappings = [
     time: "7:15 PM",
     location: "Faridabad Drive-in Theatre",
     description: "Welcome to Jurassic Park! Experience the thrill of dinosaurs in our premium drive-in setup with crystal clear sound.",
-    image: "https://sunsetcinemaclub.in/img/admin/venues/GBZpBbHppA_IMG20250608123536 (2).jpg",
+    image: "https://daily.jstor.org/wp-content/uploads/2017/03/drive_in_theater_1050x700.jpg",
     price: "899",
     capacity: "120 cars",
     city: "Delhi NCR",
