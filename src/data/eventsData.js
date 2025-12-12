@@ -62,7 +62,7 @@ export const eventsData = [
     location: "JLN gate no. 14, Delhi",
     description: "Experience the emotional journey of 'My Fault' in our open-air cinema. Bring your blankets and enjoy this captivating film under the stars.",
     image: "https://sunsetcinemaclub.in/img/admin/page/home/AK9pBWeu1Y__DSC6756 (1).jpg",
-    price: "599",
+    price: "899",
     capacity: "120 people",
     city: "Delhi NCR",
     movieName: "My Fault"
@@ -90,7 +90,7 @@ export const eventsData = [
     location: "DLF Avenue Saket, Delhi",
     description: "Celebrate Bollywood with a special screening of classic Hindi films. Enjoy traditional snacks and immerse yourself in the magic of Indian cinema.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/wuR5UuK2NU_IMG20250608142231 (1).jpg",
-    price: "799",
+    price: "899",
     capacity: "20 seats left",
     city: "Delhi NCR"
   },
@@ -116,7 +116,7 @@ export const eventsData = [
     location: "JLN gate no. 14, Delhi",
     description: "Witness James Cameron's visual masterpiece Avatar in our open-air setup. Experience Pandora like never before under the stars.",
     image: "https://media.assettype.com/deccanherald%2Fimport%2Fsites%2Fdh%2Ffiles%2Farticle_images%2FSCC.jpg?w=undefined",
-    price: "699",
+    price: "899",
     capacity: "250 people",
     city: "Delhi NCR",
     movieName: "Bollywood Classics"
@@ -143,7 +143,7 @@ export const eventsData = [
     location: "JLN gate no. 14, Delhi",
     description: "Join us for an epic Marvel marathon featuring the best of MCU. Food and beverages available throughout the event.",
     image: "https://images.thedirect.com/media/article_full/marvel-posters-ranked.jpg",
-    price: "999",
+    price: "899",
     capacity: "200 people",
     city: "Delhi NCR"
   }

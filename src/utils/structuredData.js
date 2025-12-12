@@ -28,7 +28,7 @@ export const generateEventStructuredData = (event) => {
     "offers": {
       "@type": "Offer",
       "url": `https://eventweb.com/events/${event.id}`,
-      "price": event.price || "299",
+      "price": event.price || "899",
       "priceCurrency": "INR",
       "availability": "https://schema.org/InStock",
       "validFrom": new Date().toISOString()

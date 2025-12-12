@@ -101,10 +101,10 @@ const UniversalEventCard = ({ event, index = 0, variant = 'default' }) => {
           </span>
         </div>
 
-        {/* Price Badge */}
+        {/* Price Badge - Dynamic based on event type */}
         <div className="absolute top-2 sm:top-4 right-2 sm:right-4">
           <span className="bg-black/80 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
-            ₹{event.price}
+            ₹{event.type === 'Drive-in' ? '899' : '799'}
           </span>
         </div>
 

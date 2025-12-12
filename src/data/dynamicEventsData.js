@@ -54,14 +54,14 @@ export const movieEventMappings = [
   },
   {
     id: 5,
-    title: "Drive-in Cinema: Dune",
-    type: "Drive-in",
+    title: "Special Event: Dune",
+    type: "Special Event",
     time: "7:45 PM",
-    location: "Faridabad Drive-in Theatre",
-    description: "Experience the epic sci-fi adventure of Dune in our state-of-the-art drive-in setup. Perfect sound and visual experience guaranteed.",
+    location: "Faridabad",
+    description: "Experience the epic sci-fi adventure of Dune in our state-of-the-art setup. Perfect sound and visual experience guaranteed.",
     image: "https://sunsetcinemaclub.in/img/admin/venues/GBZpBbHppA_IMG20250608123536 (2).jpg",
     price: "899",
-    capacity: "120 cars",
+    capacity: "120 seats",
     city: "Delhi NCR",
     movieName: "Dune"
   },
@@ -207,18 +207,25 @@ export const generateDynamicEvents = () => {
     
     const baseEvent = shuffledEvents[i];
     
+    // Create dynamic event with explicit properties to ensure consistency
     const dynamicEvent = {
+      // Copy all properties from baseEvent
       ...baseEvent,
+      // Override with dynamic values
       id: `${baseEvent.id}-${seed}-${i}`, // Make ID unique per day
       title: baseEvent.title,
       date: formattedDate,
       movieName: baseEvent.movieName,
       isActive: true,
       dayOffset: i,
-      // Add a random price variation for demonstration
-      price: Math.floor(baseEvent.price * (0.9 + (random() * 0.2))).toString(),
+      // Set price based on event type
+      price: baseEvent.type === 'Drive-in' ? '899' : '799',
       // Add a unique seed for any additional randomization needed
-      seed: seed
+      seed: seed,
+      // Ensure capacity is consistent
+      capacity: baseEvent.capacity || '100',
+      // Ensure city is set
+      city: baseEvent.city || 'Delhi NCR'
     };
     
     dynamicEvents.push(dynamicEvent);

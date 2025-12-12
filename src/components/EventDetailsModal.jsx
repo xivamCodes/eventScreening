@@ -81,12 +81,13 @@ const EventDetailsModal = ({ isOpen, onClose, event, onBuyTicket }) => {
                 )}
               </div>
 
-              {typeof event.price !== 'undefined' && (
-                <div className="mb-6">
-                  <span className="text-gray-400 text-sm">Price</span>
-                  <div className="text-yellow-400 font-bold text-lg">₹{event.price}</div>
+              {/* Price based on event type */}
+              <div className="mb-6">
+                <span className="text-gray-400 text-sm">Price</span>
+                <div className="text-yellow-400 font-bold text-lg">
+                  ₹{event.type === 'Drive-in' ? '899' : '799'}
                 </div>
-              )}
+              </div>
 
               <div className="flex flex-col sm:flex-row gap-2">
                 <button

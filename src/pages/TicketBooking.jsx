@@ -409,10 +409,16 @@ const TicketBooking = () => {
   const pricing = useMemo(() => {
     if (!event) return { subtotal: 0, finalPrice: 0 };
     
-    const subtotal = event.price * bookingState.ticketCount;
+    // Calculate base price based on event type
+    const basePrice = event.type === 'Drive-in' ? 899 : 799;
+    const subtotal = basePrice * bookingState.ticketCount;
     const finalPrice = subtotal + bookingState.seatPremiumSurcharge - bookingState.coupon.discount;
     
-    return { subtotal, finalPrice: Math.max(0, finalPrice) };
+    return { 
+      subtotal, 
+      finalPrice: Math.max(0, finalPrice),
+      basePrice
+    };
   }, [event, bookingState.ticketCount, bookingState.seatPremiumSurcharge, bookingState.coupon.discount]);
 
   // Loading skeleton component
@@ -954,7 +960,9 @@ const TicketBooking = () => {
               >
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-gray-300 text-sm sm:text-base">Price per ticket</span>
-                  <span className="text-white font-semibold text-sm sm:text-base">₹{event.price}</span>
+                  <span className="text-white font-semibold text-sm sm:text-base">
+                    ₹{event?.type === 'Drive-in' ? '899' : '799'}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-gray-300 text-sm sm:text-base">Quantity</span>
