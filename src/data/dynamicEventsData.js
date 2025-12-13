@@ -188,7 +188,7 @@ export const generateDynamicEvents = () => {
   // If it's after 8 PM IST, use tomorrow's date
   const useTomorrow = istTime.getHours() >= 20;
   
-  // Generate events with dynamic date
+  // Generate events with dynamic date and random seat availability
   for (let i = 0; i < shuffledEvents.length; i++) {
     const eventDate = new Date(istTime);
     
@@ -207,25 +207,27 @@ export const generateDynamicEvents = () => {
     
     const baseEvent = shuffledEvents[i];
     
-    // Create dynamic event with explicit properties to ensure consistency
+    // Generate random seat availability between 5 and 20
+    const randomSeats = Math.floor(5 + (random() * 16)); // 5-20 seats
+    const capacityText = baseEvent.type === 'Drive-in' 
+      ? `${randomSeats} cars` 
+      : baseEvent.type === 'Private Screening' 
+        ? `${randomSeats} cabins` 
+        : `${randomSeats} people`;
+    
     const dynamicEvent = {
-      // Copy all properties from baseEvent
       ...baseEvent,
-      // Override with dynamic values
       id: `${baseEvent.id}-${seed}-${i}`, // Make ID unique per day
       title: baseEvent.title,
       date: formattedDate,
       movieName: baseEvent.movieName,
       isActive: true,
       dayOffset: i,
-      // Set price based on event type
-      price: baseEvent.type === 'Drive-in' ? '899' : '799',
+      capacity: capacityText,
+      // Add a random price variation for demonstration
+      price: baseEvent.price, // Keep the fixed price
       // Add a unique seed for any additional randomization needed
-      seed: seed,
-      // Ensure capacity is consistent
-      capacity: baseEvent.capacity || '100',
-      // Ensure city is set
-      city: baseEvent.city || 'Delhi NCR'
+      seed: seed
     };
     
     dynamicEvents.push(dynamicEvent);
